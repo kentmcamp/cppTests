@@ -251,40 +251,40 @@
 - Special instructions (e.g., `#include`) processed before the main compilation step.
 - Used for including libraries, defining constants, and conditional compilation.
 - **Syntax:** Directives start with `#` and do not end with a semicolon.
-- `#include` - Includes standard or custom header files.
+    - `#include` - Includes standard or custom header files.
 
-    ```cpp
-    #include <iostream>
-    #include <string>
-    #include <cstdint>
-    ```
+        ```cpp
+        #include <iostream>
+        #include <string>
+        #include <cstdint>
+        ```
 
-- `#define` - Defines macros for simple text replacements.
+    - `#define` - Defines macros for simple text replacements.
 
-    ```cpp
-    #define CAPACITY 5000
-    int main() {
-        int large = CAPACITY;  // Replaced with 5000
-        std::cout << "large = " << large << std::endl;
-        return 0;
-    }
-    ```
+        ```cpp
+        #define CAPACITY 5000
+        int main() {
+            int large = CAPACITY;  // Replaced with 5000
+            std::cout << "large = " << large << std::endl;
+            return 0;
+        }
+        ```
 
-- `#ifdef` and `#endif` - Conditional compilation based on macro definitions.
+    - `#ifdef` and `#endif` - Conditional compilation based on macro definitions.
 
-    ```cpp
-    #define DEBUG
+        ```cpp
+        #define DEBUG
 
-    int main() {
-        int a = 5, b = 6;
+        int main() {
+            int a = 5, b = 6;
 
-    #ifdef DEBUG
-        std::cout << "A = " << a << ", B = " << b << std::endl;
-    #endif
+        #ifdef DEBUG
+            std::cout << "A = " << a << ", B = " << b << std::endl;
+        #endif
 
-        return 0;
-    }
-    ```
+            return 0;
+        }
+        ```
 
 
 ## Constants
@@ -310,6 +310,25 @@
 - All data is homogeneous; of the same data type.
 - Fixed size.
 - Contiguous in memory.
+- `arrayLoop.cpp`
+
+    ```cpp
+    #include <iostream>
+    #include <string>
+
+    int main() {
+        int age [4];
+        age[4] = 3;
+
+        for (int i = 0; i < (sizeof(age)/sizeof(age[0])) - 1; i++) {
+            age[i] = i;
+            std::cout << age[i] << std::endl;
+        }
+        std::cout << age[4];
+        return(0);
+    }
+    ```
+
 
 ## Strings
 
@@ -343,56 +362,361 @@
 
 - Converts one data type to another.
 - Syntax: `(type)(expression)` for explicit casting.
+    - Truncating `float` to `int`:
 
-### Examples:
+        ```cpp
+        float flt = -7.44f;
+        int sgn = (int)flt;  // Explicit cast
+        std::cout << "sgn = " << sgn << std::endl;  // Outputs -7
+        ```
 
-- Truncating `float` to `int`:
+    - Preventing integer division in calculations:
 
-    ```cpp
-    float flt = -7.44f;
-    int sgn = (int)flt;  // Explicit cast
-    std::cout << "sgn = " << sgn << std::endl;  // Outputs -7
-    ```
+        ```cpp
+        int fahrenheit = 100;
+        float celsius = ((float)5 / 9) * (fahrenheit - 32);
+        std::cout << "Celsius = " << celsius << std::endl;
+        ```
 
-- Preventing integer division in calculations:
+    - Extracting fractional part of a `float`:
 
-    ```cpp
-    int fahrenheit = 100;
-    float celsius = ((float)5 / 9) * (fahrenheit - 32);
-    std::cout << "Celsius = " << celsius << std::endl;
-    ```
+        ```cpp
+        float weight = 10.99;
+        std::cout << "Fractional: " << (int)((weight - (int)weight) * 10000) << std::endl;
+        ```
 
-- Extracting fractional part of a `float`:
 
-    ```cpp
-    float weight = 10.99;
-    std::cout << "Fractional: " << (int)((weight - (int)weight) * 10000) << std::endl;
-    ```
+## Enumerations
 
+### Enumerators (Enums) inherited from C
+
+- `Enumerators` (or `enums`) are user-defined data types that consists of a set of named integral constants.
+- `Enums` are used to assign names to integral constants, making the code more readable and maintainable.
+    - `enum Color { RED, GREEN, BLUE };`
+- By  default, the first enum has the value `0`, the second `1`, and so on (not unlike arrays). You can assign specific values however.
+    - `enum Color { RED = 3, GREEN = 2, BLUE = 1 };`
+
+### Enum Classes (Scoped Enums) in C++
+
+- `Enum Classes` (or `scoped enums`) are a type-safe and scoped version of traditional enums introduced in C++11.
+- `Enum Classes` provide a better type safety and avoid name clashes by scoping the enumerators within the enum class.
+    - `enum class Color { RED, GREEN, BLUE };`
+- Enumerators are accessed using the scope resolution operator: `::`
+    - `Color myColor = Color::RED;`
+- You can also specify the underlying type of the enum class:
+    - `enum class Color : int { RED = 1, GREEN = 2, BLUE = 3};`
 
 # Structures, Classes, and Pointers
 
 ## Structures
 
-## Enumerations
+- Containers of heterogeneous data members.
+- Useful for implementing simple models
+    - `movie-struct.cpp`
+
+        ```cpp
+        #include <iostream>
+        #include <string>
+
+        struct movie{
+            std::string title;
+            std::string director;
+            int year;
+            float rating;
+            bool watched;
+        };
+
+        int main() {
+
+            movie madmax;
+            madmax.title = "Mad Max: Fury Road";
+            madmax.director = "George Miller";
+            madmax.year = 2015;
+            madmax.rating = 4.5;
+            madmax.watched = 1;
+
+            std::cout << "The movie is " << madmax.title << ", directed by " << madmax.director << " in " << madmax.year << ". It's rating is " << madmax.rating << "." << std::endl;
+
+            std::cout << "Did I watch it? ";
+            if (madmax.watched) {
+                std::cout << "Yes";
+            } else {
+                std::cout << "No";
+            }
+
+            return(0);
+        }
+        ```
+
 
 ## Classes
 
-## Using Classes
+- Basic elements of OOP
+- Contain `data` and `function` members.
+
+### Properties
+
+- Properties can be private, public, or protected. But it’s a good idea to only make functions public.
+    - **Example:**
+
+        ```cpp
+        class movie {
+        private:
+            std::string title;
+            std::string director;
+            int year;
+            float rating;
+        public:
+            bool watched;
+        };
+        ```
+
+
+### Getters / Accessors
+
+- `Getters` is how you retrieve private member values without external modification.
+- Since you don’t want to change anything via a `Getter`, it’s a good idea to add the `const` keyword:
+    - **Example:**
+
+        ```cpp
+        // Getters
+        std::string get_name() const{
+            return title;
+        };
+        std::string get_director() const{
+            return director;
+        };
+        int get_year() const{
+            return year;
+        };
+        float get_rating() const{
+            return rating;
+        };
+        bool get_watched() const{
+            return watched;
+        };
+        ```
+
+
+### Setters / Modifiers
+
+- Updates private member values safely.
+    - **Example:**
+
+        ```cpp
+        // Setters
+        void set_name(std::string title_i){
+            title = title_i;
+        };
+        void set_director(std::string director_i){
+            director = director_i;
+        };
+        void set_year(int year_i){
+            year = year_i;
+        };
+        void set_rating(float rating_i){
+            rating = rating_i;
+        };
+        void set_watched(bool watched_i){
+            watched = watched_i;
+        };
+        ```
+
+
+### Constructors
+
+- Initialize class objects when created. They match the class name, and have no return type.
+
+    ### Default Constructors
+
+    - No arguments; initializes members to default values.
+
+        ```cpp
+        class Person {
+        private:
+            std::string name;
+            int age;
+
+        public:
+            Person() : name(""), age(0) {}
+        };
+        ```
+
+
+    ### Overloading Constructors
+
+    - Allows multiple constructors with different parameters.
+
+        ```cpp
+        class Person {
+        private:
+            std::string name;
+            int age;
+
+        public:
+            Person() : name(""), age(0) {}
+            Person(std::string newName) : name(newName), age(0) {}
+            Person(std::string newName, int newAge) : name(newName), age(newAge) {}
+        };
+
+        ```
+
+- `movie-class.cpp`
+
+    ```cpp
+    #include <iostream>
+    #include <string>
+
+    class movie {
+    public:
+
+        // Constructors
+        // Default constructor
+        movie() {
+            title = "No title";
+            director = "No director";
+            year = 0;
+            rating = 0.0;
+            watched = false;
+        }
+
+        // Parameterized constructor
+        movie(std::string title_i, std::string director_, int year_i, float rating_i, bool watched_i) {
+            title = title_i;
+            director = director_;
+            year = year_i;
+            rating = rating_i;
+            watched = watched_i;
+        }
+
+        // Getters
+        std::string get_name() const{
+            return title;
+        };
+        std::string get_director() const{
+            return director;
+        };
+        int get_year() const{
+            return year;
+        };
+        float get_rating() const{
+            return rating;
+        };
+        bool get_watched() const{
+            return watched;
+        };
+
+        // Setters
+        void set_name(std::string title_i){
+            title = title_i;
+        };
+        void set_director(std::string director_i){
+            director = director_i;
+        };
+        void set_year(int year_i){
+            year = year_i;
+        };
+        void set_rating(float rating_i){
+            rating = rating_i;
+        };
+        void set_watched(bool watched_i){
+            watched = watched_i;
+        };
+
+    private:
+        std::string title;
+        std::string director;
+        int year;
+        float rating;
+        bool watched;
+    };
+
+    int main() {
+
+        movie madmax("Mad Max: Fury Road", "George Miller", 2015, 4.5, true);
+
+        std::cout << "The movie is " << madmax.get_name() << ", directed by " << madmax.get_director() << " in " << madmax.get_year() << ". It's rating is " << madmax.get_rating() << "." << std::endl;
+
+        std::cout << "Did I watch it? ";
+        if (madmax.get_watched() == true)
+        {
+            std::cout << "Yes" << std::endl;;
+        }
+        else
+        {
+            std::cout << "No" << std::endl;;
+        }
+
+        madmax.set_rating(5.0);
+        std::cout << "Actually, I changed my rating to a " << madmax.get_rating() << std::endl;
+
+        return (0);
+    }
+    ```
+
 
 ## Header and Implementation Files
+
+- `Header Files (.h)`: Contain class definitions and function declarations.
+- `Implementation Files (.cpp)`: Contain executable code, must include their corresponding headers.
 
 ## Using Several Source Files
 
 ## Pointers
 
-## Using Objects with Pointers
+- Variables storing memory addresses.
+- Use `&` to get an address, and `*` to dereference it.
+    - **Example:**
+
+        ```cpp
+        int a = 37;
+        int* ptr = &a;
+
+        std::cout << "Value of a: " << a << std::endl;
+        std::cout << "Address of a: " << &a << std::endl;
+        std::cout << "Value of ptr: " << ptr << std::endl;
+        std::cout << "Dereferenced ptr: " << *ptr << std::endl;
+        ```
+
 
 ## References
 
+- Another name for an existing variable.
+- Use `&` in declarations, no reassignment.
+    - **Example:**
+
+        ```cpp
+        int a = 10;
+        int& ref = a;
+
+        std::cout << "Value of a: " << a << std::endl;
+        std::cout << "Value of ref: " << ref << std::endl;
+
+        ref = 20;
+        std::cout << "Updated value of a: " << a << std::endl;
+        ```
+
+
 ## Vectors
 
-## Using Objects with Vectors
+- Dynamic arrays from the Standard Template Library (STL)
+- Include `<vector>` to use.
+    - **Example:**
+
+        ```cpp
+        #include <vector>
+        #include <iostream>
+
+        int main() {
+            std::vector<int> numbers = {1, 2, 3, 4, 5};
+
+            for (int num : numbers) {
+                std::cout << num << " ";
+            }
+            return 0;
+        }
+        ```
+
 
 # Control Flow
 
